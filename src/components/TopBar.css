@@ -1,0 +1,74 @@
+.topbar {
+  height: 72px;
+  background: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.topbar-menu {
+  background: none;
+  border: none;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 34px;
+}
+
+.topbar-menu span {
+  display: block;
+  height: 2.5px;
+  width: 100%;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.topbar-title {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.lang-toggle {
+  display: flex;
+  border: 1px solid #4b4b4b;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.lang-toggle button {
+  background: transparent;
+  border: none;
+  color: #b0b0b0;
+  padding: 7px 16px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.lang-toggle button.active {
+  background: #fff;
+  color: #000;
+}
+
+.topbar-logout {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}

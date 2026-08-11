@@ -1,0 +1,103 @@
+.pcc { display: flex; gap: 24px; align-items: flex-start; }
+.pcc-form { flex: 1; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.pcc-form .field { margin-bottom: 0; }
+
+.pcc-img-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.pcc-title-upload { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.pcc-title-thumb {
+  height: 28px;
+  max-width: 120px;
+  object-fit: contain;
+  background: #2a2130;
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+/* 预览：手机 + 消息流 */
+.pcc-preview { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.pcc-phone {
+  width: 260px;
+  border-radius: 28px;
+  border: 8px solid #1a1a1a;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+}
+.pcc-chat {
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: linear-gradient(180deg, #fbe9f0 0%, #eef1fb 100%);
+  min-height: 380px;
+}
+
+.pcc-bubble {
+  max-width: 78%;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  line-height: 1.4;
+}
+.pcc-bubble.left { align-self: flex-start; background: #fff; color: #1a1a1a; border-bottom-left-radius: 4px; }
+
+/* 玩法卡片 */
+.pcc-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-color: #2a2130;
+  background-image: linear-gradient(135deg, #3a2a3f 0%, #6b2c4d 100%);
+  min-height: 150px;
+  display: flex;
+  align-items: flex-end;
+}
+.pcc-card-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.55) 100%);
+}
+.pcc-card-content {
+  position: relative;
+  padding: 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.pcc-card-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+.pcc-card-name-img {
+  max-height: 56px;
+  max-width: 90%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+}
+.pcc-card-intro {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.4;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.pcc-card-btn {
+  margin-top: 4px;
+  background: linear-gradient(90deg, #ff5c8a, #ff3d6e);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 28px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(255, 61, 110, 0.4);
+}
+
+.pcc-preview-cap { font-size: 12px; color: #9ca3af; }

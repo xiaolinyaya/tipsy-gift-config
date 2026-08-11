@@ -1,0 +1,88 @@
+.mln { display: flex; flex-direction: column; gap: 10px; }
+
+.mln-source-row { display: flex; gap: 10px; }
+.mln-source-input {
+  flex: 1;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+}
+.mln-source-input:focus { outline: none; border-color: #1a1a1a; }
+
+.btn-translate {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 10px;
+  padding: 0 16px;
+  font-size: 14px;
+  color: #2563eb;
+  white-space: nowrap;
+}
+.btn-translate:hover:not(:disabled) { background: #f0f7ff; border-color: #bfdbfe; }
+.btn-translate:disabled { color: #c4c4c4; cursor: not-allowed; }
+
+.mln-toggle {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 14px;
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mln-progress {
+  font-size: 12px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 1px 8px;
+}
+
+.mln-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 20px;
+  padding: 14px;
+  background: #fafafa;
+  border-radius: 12px;
+}
+
+.mln-item { display: flex; align-items: center; gap: 10px; }
+.mln-lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 150px;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+.mln-flag { font-size: 16px; }
+.mln-lang-name { color: #374151; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mln-lang-code { color: #b0b0b0; font-size: 11px; text-transform: uppercase; }
+
+.mln-input {
+  flex: 1;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  min-width: 0;
+}
+.mln-input:focus { outline: none; border-color: #1a1a1a; }
+.mln-input.placeholder { border-style: dashed; border-color: #fca5a5; }
+.mln-input.rtl { text-align: right; }
+
+.mln-warn {
+  font-size: 11px;
+  color: #dc2626;
+  background: #fef2f2;
+  border-radius: 6px;
+  padding: 2px 6px;
+  flex-shrink: 0;
+}

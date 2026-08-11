@@ -1,0 +1,150 @@
+.fx { display: flex; gap: 24px; align-items: flex-start; }
+.fx-left { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+.fx-type { display: flex; gap: 10px; }
+.fx-type-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.fx-type-btn:hover { border-color: #d1d5db; }
+.fx-type-btn.active { border-color: #1a1a1a; background: #fafafa; }
+.fx-type-label { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+.fx-type-desc { font-size: 12px; color: #9ca3af; }
+
+.fx-drop {
+  border: 1.5px dashed #d1d5db;
+  border-radius: 12px;
+  background: #fafafa;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #6b7280;
+}
+.fx-drop:hover { border-color: #9ca3af; background: #f3f4f6; }
+.fx-plus { font-size: 24px; color: #9ca3af; }
+.fx-drop-hint { font-size: 14px; }
+.fx-filename { font-size: 12px; color: #2563eb; margin-top: 4px; word-break: break-all; }
+
+.fx-actions { display: flex; gap: 8px; }
+
+/* 聊天室预览：手机外框 */
+.fx-preview { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.fx-phone {
+  width: 240px;
+  height: 460px;
+  border-radius: 28px;
+  border: 8px solid #1a1a1a;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+}
+.fx-chat {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #fbe9f0 0%, #eef1fb 100%);
+}
+.fx-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
+}
+.fx-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.fx-chat-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+
+.fx-chat-body { flex: 1; position: relative; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.fx-bubble {
+  max-width: 78%;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  line-height: 1.4;
+}
+.fx-bubble.left { align-self: flex-start; background: #fff; color: #1a1a1a; border-bottom-left-radius: 4px; }
+.fx-bubble.right { align-self: flex-end; background: #1a1a1a; color: #fff; border-bottom-right-radius: 4px; }
+
+.fx-stage {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  animation: fxpop 0.4s ease;
+}
+/* 全局动效：全屏铺满 */
+.fx-stage-global { inset: 0; }
+/* 局部动效：锚定在底部礼物位上方的小范围 */
+.fx-stage-local {
+  left: 50%;
+  bottom: 52px;
+  transform: translateX(-50%);
+  width: 108px;
+  height: 108px;
+}
+.fx-stage-local .fx-media,
+.fx-stage-local .fx-stage-empty { max-width: 108px; max-height: 108px; }
+.fx-stage-local .fx-stage-empty { font-size: 11px; text-align: center; }
+@keyframes fxpop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+.fx-media { max-width: 100%; max-height: 100%; object-fit: contain; }
+.fx-stage-empty {
+  font-size: 12px;
+  color: #9ca3af;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.fx-lottie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  color: #4f46e5;
+  font-size: 12px;
+}
+.fx-lottie-spin { font-size: 28px; animation: spin 2s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.fx-lottie-sub { color: #9ca3af; font-size: 10px; }
+
+.fx-gift-toast {
+  margin-top: auto;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+.fx-toast-icon { font-size: 16px; }
+
+.fx-preview-cap { font-size: 12px; color: #9ca3af; }
