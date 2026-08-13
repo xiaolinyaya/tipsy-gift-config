@@ -28,13 +28,56 @@ export default function GiftEditPage({ giftId, onDone }) {
   const { get, upsert, remove } = useGifts()
   const isNew = !giftId
   const [form, setForm] = useState(() => (giftId ? { ...get(giftId) } : blankGift()))
+  const [toast, setToast] = useState(null)
 
   const set = (patch) => setForm((f) => ({ ...f, ...patch }))
 
+  function showToast(message) {
+    setToast(message)
+    clearTimeout(showToast._t)
+    showToast._t = setTimeout(() => setToast(null), 3000)
+  }
+
+  // 上架门槛：基础信息板块必须全部已填写。返回缺失项列表。
+  function missingBasics(f) {
+    const missing = []
+    if (!f.iconUrl) missing.push({ label: '礼物图标', anchor: 'edit-icon' })
+    if (!f.nameEn.trim()) missing.push({ label: '英文名', anchor: 'edit-names' })
+    if (!(f.price > 0)) missing.push({ label: '定价', anchor: 'edit-price' })
+    if (!(f.intimacy > 0)) missing.push({ label: '亲密度', anchor: 'edit-intimacy' })
+    return missing
+  }
+
+  function guideToMissing(missing) {
+    showToast(`上架前请完善基础信息：${missing.map((m) => m.label).join('、')}`)
+    document.querySelector(`[data-prd="${missing[0].anchor}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
+  function toggleStatus() {
+    if (form.status === 'on') {
+      set({ status: 'off' })
+      return
+    }
+    const missing = missingBasics(form)
+    if (missing.length) {
+      guideToMissing(missing)
+      return
+    }
+    set({ status: 'on' })
+  }
+
   function save() {
     if (!form.nameEn.trim()) {
-      alert('请填写英文名（核心名称）')
+      showToast('请填写英文名（核心名称）')
+      document.querySelector('[data-prd="edit-names"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       return
+    }
+    if (form.status === 'on') {
+      const missing = missingBasics(form)
+      if (missing.length) {
+        guideToMissing(missing)
+        return
+      }
     }
     upsert(form)
     onDone()
@@ -42,6 +85,12 @@ export default function GiftEditPage({ giftId, onDone }) {
 
   return (
     <div className="edit-page">
+      {toast && (
+        <div className="edit-toast" role="alert">
+          <span className="edit-toast-icon">!</span>
+          <span>{toast}</span>
+        </div>
+      )}
       <div className="gift-breadcrumb">
         <button className="crumb-link" onClick={onDone}>Home</button>
         <span className="crumb-sep">/</span>
@@ -80,7 +129,7 @@ export default function GiftEditPage({ giftId, onDone }) {
         <button
           type="button"
           className={`switch ${form.status === 'on' ? 'on' : ''}`}
-          onClick={() => set({ status: form.status === 'on' ? 'off' : 'on' })}
+          onClick={toggleStatus}
         >
           <span className="knob" />
         </button>
@@ -162,10 +211,10 @@ export default function GiftEditPage({ giftId, onDone }) {
               <span className="cat-option-radio" />
               <span className="cat-option-body">
                 <span className="cat-option-name">
-                  活动礼物 <span className="seg-badge">限时</span>
+                  活动礼物 <span className="seg-badge">活动</span>
                 </span>
                 <span className="cat-option-desc">
-                  活动性质的礼物会带「限时」标签，并且在礼物商城中位置会更靠前。
+                  活动性质的礼物会带「活动」标签，并且在礼物商城中位置会更靠前。
                 </span>
               </span>
             </button>
@@ -187,9 +236,9 @@ export default function GiftEditPage({ giftId, onDone }) {
                   <li>格式：PNG / WebP / SVG（透明背景）</li>
                   <li>尺寸：横向，建议 120 × 48 px</li>
                   <li>大小：≤ 1MB</li>
-                  <li>用途：叠加在礼物图标角标位，替代默认「限时」文字标签</li>
+                  <li>用途：叠加在礼物图标角标位，替代默认「活动」文字标签</li>
                 </ul>
-                <p className="spec-fallback">留空则使用系统默认「限时」文字标签。</p>
+                <p className="spec-fallback">留空则使用系统默认「活动」文字标签。</p>
               </div>
             </div>
           </div>
@@ -223,7 +272,7 @@ export default function GiftEditPage({ giftId, onDone }) {
               onChange={(bubbleText) => set({ bubbleText })}
             />
             <label className="field-label" style={{ marginTop: 14 }}>气泡背景</label>
-            <div className="upload-with-spec">
+            <div className="upload-with-spec" data-prd="edit-bubble-bg">
               <ImageUpload
                 value={form.bubbleBgUrl}
                 onChange={(bubbleBgUrl) => set({ bubbleBgUrl })}
