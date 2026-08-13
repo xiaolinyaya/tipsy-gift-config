@@ -99,5 +99,11 @@
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(255, 61, 110, 0.4);
 }
+.pcc-card-btn.has-bg {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
 
 .pcc-preview-cap { font-size: 12px; color: #9ca3af; }

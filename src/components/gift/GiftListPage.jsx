@@ -34,19 +34,20 @@ export default function GiftListPage({ onBack, onEdit, onCreate }) {
         <span className="crumb-current">礼物配置</span>
       </div>
 
-      <div className="gift-header">
+      <div className="gift-header" data-prd="list-header">
         <div>
           <h1 className="gift-title">礼物配置</h1>
           <p className="gift-subtitle">管理礼物的上架、排序与定价，定价与上下架在编辑页调整</p>
         </div>
-        <button className="btn-primary" onClick={onCreate}>+ 新建礼物</button>
+        <button className="btn-primary" data-prd="list-create" onClick={onCreate}>+ 新建礼物</button>
       </div>
 
-      <div className="gift-tabs">
+      <div className="gift-tabs" data-prd="list-tabs">
         {TABS.map((t) => (
           <button
             key={t.key}
             className={`gift-tab ${tab === t.key ? 'active' : ''}`}
+            data-prd={`list-tab-${t.key}`}
             onClick={() => setTab(t.key)}
           >
             {t.label}
@@ -57,19 +58,19 @@ export default function GiftListPage({ onBack, onEdit, onCreate }) {
         ))}
       </div>
 
-      <div className="gift-table">
+      <div className="gift-table" data-prd="list-table">
         <div className="gift-row gift-row-head">
-          <span className="col-drag" />
-          <span className="col-gift">礼物样式</span>
-          <span className="col-cat">分类</span>
-          <span className="col-price">定价 (Gems)</span>
-          <span className="col-int">亲密度</span>
-          <span className="col-flag">特殊气泡</span>
-          <span className="col-flag">角色回复</span>
-          <span className="col-effect">动效</span>
-          <span className="col-play">玩法</span>
-          <span className="col-status">状态</span>
-          <span className="col-act">操作</span>
+          <span className="col-drag" data-prd="list-col-drag" />
+          <span className="col-gift" data-prd="list-col-gift">礼物样式</span>
+          <span className="col-cat" data-prd="list-col-cat">分类</span>
+          <span className="col-price" data-prd="list-col-price">定价 (Gems)</span>
+          <span className="col-int" data-prd="list-col-int">亲密度</span>
+          <span className="col-flag" data-prd="list-col-bubble">特殊气泡</span>
+          <span className="col-flag" data-prd="list-col-reply">角色回复</span>
+          <span className="col-effect" data-prd="list-col-effect">动效</span>
+          <span className="col-play" data-prd="list-col-play">玩法</span>
+          <span className="col-status" data-prd="list-col-status">状态</span>
+          <span className="col-act" data-prd="list-col-act">操作</span>
         </div>
 
         {rows.map((g) => {
@@ -100,7 +101,7 @@ export default function GiftListPage({ onBack, onEdit, onCreate }) {
               setOverId(null)
             }}
           >
-            <span className="col-drag" title={dragTitle}>
+            <span className="col-drag" title={dragTitle} data-prd="list-col-drag">
               <span className={`drag-handle ${canDrag ? '' : 'disabled'}`}>⠿</span>
             </span>
 
@@ -118,7 +119,7 @@ export default function GiftListPage({ onBack, onEdit, onCreate }) {
 
             <span className="col-cat">
               {g.category === 'event' ? (
-                <span className="badge-event">限时</span>
+                <span className="badge-event">活动</span>
               ) : (
                 <span className="badge-daily">日常</span>
               )}
@@ -154,15 +155,15 @@ export default function GiftListPage({ onBack, onEdit, onCreate }) {
                   : <span className="cap-pill off">未开启</span>}
             </span>
 
-            <span className="col-status">
+            <span className="col-status" data-prd="list-col-status">
               <span className={`status-pill ${g.status === 'on' ? 'on' : 'off'}`}>
                 <span className="dot" />
                 {g.status === 'on' ? '已上架' : '已下架'}
               </span>
             </span>
 
-            <span className="col-act">
-              <button className="link-edit" onClick={() => onEdit(g.id)}>编辑</button>
+            <span className="col-act" data-prd="list-col-act">
+              <button className="link-edit" data-prd="list-edit-btn" onClick={() => onEdit(g.id)}>编辑</button>
             </span>
           </div>
           )

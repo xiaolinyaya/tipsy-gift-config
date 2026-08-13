@@ -24,7 +24,7 @@ export default function MultiLangNames({ nameEn, names, onNameEnChange, onNamesC
   return (
     <div className="mln">
       <label className="field-label">英文名</label>
-      <div className="mln-source-row">
+      <div className="mln-source-row" data-prd="mln-source">
         <input
           className="mln-source-input"
           value={nameEn}
@@ -34,6 +34,7 @@ export default function MultiLangNames({ nameEn, names, onNameEnChange, onNamesC
         <button
           type="button"
           className="btn-translate"
+          data-prd="mln-translate"
           disabled={!nameEn.trim() || translating}
           onClick={handleTranslate}
         >
@@ -41,13 +42,13 @@ export default function MultiLangNames({ nameEn, names, onNameEnChange, onNamesC
         </button>
       </div>
 
-      <button type="button" className="mln-toggle" onClick={() => setOpen((v) => !v)}>
+      <button type="button" className="mln-toggle" data-prd="mln-toggle" onClick={() => setOpen((v) => !v)}>
         {open ? '▾' : '▸'} 多语言名称
         <span className="mln-progress">{filled}/{targets.length} 已翻译</span>
       </button>
 
       {open && (
-        <div className="mln-grid">
+        <div className="mln-grid" data-prd="mln-grid">
           {targets.map((l) => {
             const val = names[l.code] || ''
             const placeholder = isPlaceholder(val)
@@ -65,7 +66,7 @@ export default function MultiLangNames({ nameEn, names, onNameEnChange, onNamesC
                   placeholder={placeholder ? `未翻译 · 点「自动翻译」或手填` : l.name}
                   onChange={(e) => onNamesChange({ ...names, [l.code]: e.target.value })}
                 />
-                {placeholder && <span className="mln-warn" title="机器占位，待确认">待确认</span>}
+                {placeholder && <span className="mln-warn" data-prd="mln-placeholder" title="机器占位，待确认">待确认</span>}
               </div>
             )
           })}

@@ -13,7 +13,7 @@ function blankGift() {
     emoji: '🎁', iconUrl: '', nameEn: '', names: {}, category: 'daily',
     eventBadgeUrl: '',
     price: 0, intimacy: 0,
-    specialBubble: false, bubbleText: '',
+    specialBubble: false, bubbleText: '', bubbleBgUrl: '',
     charReply: false, replyPrompt: '',
     hasEffect: false, effectType: 'local', effect: '', effectUrl: '',
     hasPlay: false,
@@ -50,12 +50,13 @@ export default function GiftEditPage({ giftId, onDone }) {
         <span className="crumb-current">{isNew ? '新建礼物' : `编辑 · ${form.nameEn || '未命名'}`}</span>
       </div>
 
-      <div className="edit-header">
+      <div className="edit-header" data-prd="edit-header">
         <h1 className="gift-title">{isNew ? '新建礼物' : '编辑礼物'}</h1>
         <div className="edit-actions">
           {!isNew && (
             <button
               className="btn-danger"
+              data-prd="edit-delete"
               onClick={() => {
                 if (confirm(`确定删除礼物「${form.nameEn}」？`)) {
                   remove(form.id)
@@ -66,12 +67,12 @@ export default function GiftEditPage({ giftId, onDone }) {
               删除
             </button>
           )}
-          <button className="btn-ghost" onClick={onDone}>取消</button>
-          <button className="btn-primary" onClick={save}>保存</button>
+          <button className="btn-ghost" data-prd="edit-cancel" onClick={onDone}>取消</button>
+          <button className="btn-primary" data-prd="edit-save" onClick={save}>保存</button>
         </div>
       </div>
 
-      <div className={`status-bar ${form.status === 'on' ? 'on' : 'off'}`}>
+      <div className={`status-bar ${form.status === 'on' ? 'on' : 'off'}`} data-prd="edit-status">
         <div className="status-bar-info">
           <span className="status-bar-dot" />
           <span className="status-bar-title">{form.status === 'on' ? '已上架' : '已下架'}</span>
@@ -86,10 +87,10 @@ export default function GiftEditPage({ giftId, onDone }) {
       </div>
 
       {/* 分组 1：基础信息 */}
-      <section className="edit-section">
+      <section className="edit-section" data-prd="edit-basic">
         <h2 className="section-title">基础信息</h2>
 
-        <div className="field">
+        <div className="field" data-prd="edit-icon">
           <label className="field-label">礼物图标</label>
           <div className="upload-with-spec">
             <ImageUpload value={form.iconUrl} onChange={(iconUrl) => set({ iconUrl })} size={96} />
@@ -106,7 +107,7 @@ export default function GiftEditPage({ giftId, onDone }) {
           </div>
         </div>
 
-        <div className="field">
+        <div className="field" data-prd="edit-names">
           <MultiLangNames
             nameEn={form.nameEn}
             names={form.names}
@@ -116,7 +117,7 @@ export default function GiftEditPage({ giftId, onDone }) {
         </div>
 
         <div className="field-row">
-          <div className="field">
+          <div className="field" data-prd="edit-price">
             <label className="field-label">定价 (Gems)</label>
             <input
               className="text-input"
@@ -127,7 +128,7 @@ export default function GiftEditPage({ giftId, onDone }) {
             />
           </div>
 
-          <div className="field">
+          <div className="field" data-prd="edit-intimacy">
             <label className="field-label">亲密度 (+N)</label>
             <input
               className="text-input"
@@ -139,7 +140,7 @@ export default function GiftEditPage({ giftId, onDone }) {
           </div>
         </div>
 
-        <div className="field">
+        <div className="field" data-prd="edit-category">
           <label className="field-label">分类</label>
           <div className="cat-options">
             <button
@@ -172,7 +173,7 @@ export default function GiftEditPage({ giftId, onDone }) {
         </div>
 
         {form.category === 'event' && (
-          <div className="field conditional">
+          <div className="field conditional" data-prd="edit-event-badge">
             <label className="field-label">活动标签样式</label>
             <div className="upload-with-spec">
               <ImageUpload
@@ -196,10 +197,10 @@ export default function GiftEditPage({ giftId, onDone }) {
       </section>
 
       {/* 分组 2：互动（开关联动） */}
-      <section className="edit-section">
+      <section className="edit-section" data-prd="edit-interaction">
         <h2 className="section-title">互动</h2>
 
-        <div className="switch-row">
+        <div className="switch-row" data-prd="edit-bubble-switch">
           <div className="switch-label">
             <span>特殊气泡</span>
             <span className="switch-desc">开启后可配置送礼时展示的气泡文案</span>
@@ -213,7 +214,7 @@ export default function GiftEditPage({ giftId, onDone }) {
           </button>
         </div>
         {form.specialBubble && (
-          <div className="field conditional">
+          <div className="field conditional" data-prd="edit-bubble-text">
             <label className="field-label">送礼气泡文案</label>
             <AutoTextarea
               className="text-area"
@@ -221,10 +222,28 @@ export default function GiftEditPage({ giftId, onDone }) {
               placeholder="e.g. 为你点亮全场 ✨"
               onChange={(bubbleText) => set({ bubbleText })}
             />
+            <label className="field-label" style={{ marginTop: 14 }}>气泡背景</label>
+            <div className="upload-with-spec">
+              <ImageUpload
+                value={form.bubbleBgUrl}
+                onChange={(bubbleBgUrl) => set({ bubbleBgUrl })}
+                size={72}
+              />
+              <div className="spec-box">
+                <div className="spec-title">气泡背景规范</div>
+                <ul className="spec-list">
+                  <li>格式：PNG / WebP（透明底，支持九宫格拉伸）</li>
+                  <li>尺寸：建议 300 × 120 px，随文案长度横向拉伸</li>
+                  <li>大小：≤ 1MB</li>
+                  <li>留白：文字安全区四周留 ~12% 边距</li>
+                </ul>
+                <p className="spec-fallback">留空则使用系统默认气泡样式。</p>
+              </div>
+            </div>
           </div>
         )}
 
-        <div className="switch-row">
+        <div className="switch-row" data-prd="edit-reply-switch">
           <div className="switch-label">
             <span>角色回复</span>
             <span className="switch-desc">开启后角色会对该礼物做出 AI 回复</span>
@@ -238,7 +257,7 @@ export default function GiftEditPage({ giftId, onDone }) {
           </button>
         </div>
         {form.charReply && (
-          <div className="field conditional">
+          <div className="field conditional" data-prd="edit-reply-prompt">
             <label className="field-label">角色回复 Prompt</label>
             <AutoTextarea
               className="text-area"
@@ -250,7 +269,7 @@ export default function GiftEditPage({ giftId, onDone }) {
           </div>
         )}
 
-        <div className="switch-row">
+        <div className="switch-row" data-prd="edit-effect-switch">
           <div className="switch-label">
             <span>聊天室动效</span>
             <span className="switch-desc">开启后可上传送礼时在聊天室播放的动效</span>
@@ -264,7 +283,7 @@ export default function GiftEditPage({ giftId, onDone }) {
           </button>
         </div>
         {form.hasEffect && (
-          <div className="field conditional">
+          <div className="field conditional" data-prd="edit-effect-config">
             <EffectUpload
               value={form.effectUrl}
               fileName={form.effect}
@@ -277,7 +296,7 @@ export default function GiftEditPage({ giftId, onDone }) {
           </div>
         )}
 
-        <div className="switch-row">
+        <div className="switch-row" data-prd="edit-play-switch">
           <div className="switch-label">
             <span>玩法卡片</span>
             <span className="switch-desc">开启后在聊天室以特殊消息卡呈现，点击进入对应玩法</span>
@@ -291,7 +310,7 @@ export default function GiftEditPage({ giftId, onDone }) {
           </button>
         </div>
         {form.hasPlay && (
-          <div className="field conditional">
+          <div className="field conditional" data-prd="edit-play-config">
             <PlayCardConfig play={form.play} onChange={(play) => set({ play })} />
           </div>
         )}

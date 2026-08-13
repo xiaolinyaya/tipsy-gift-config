@@ -3,7 +3,7 @@ import './PageCard.css'
 
 export default function PageCard({ page, onClick }) {
   return (
-    <button className="page-card" onClick={onClick}>
+    <button className="page-card" data-prd={`home-card-${page.key}`} onClick={onClick}>
       <span className="page-card-icon" style={{ background: page.bg, color: page.fg }}>
         {Icons[page.icon]}
       </span>

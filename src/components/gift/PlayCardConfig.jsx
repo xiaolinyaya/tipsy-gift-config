@@ -7,6 +7,7 @@ import './PlayCardConfig.css'
 export default function PlayCardConfig({ play, onChange }) {
   const imgInput = useRef(null)
   const titleInput = useRef(null)
+  const buttonInput = useRef(null)
   const set = (patch) => onChange({ ...play, ...patch })
 
   function readImage(file, key, maxMB) {
@@ -19,11 +20,12 @@ export default function PlayCardConfig({ play, onChange }) {
 
   const handleImage = (file) => readImage(file, 'cardImageUrl', 4)
   const handleTitleImage = (file) => readImage(file, 'nameImageUrl', 2)
+  const handleButtonImage = (file) => readImage(file, 'buttonBgUrl', 1)
 
   return (
     <div className="pcc">
       <div className="pcc-form">
-        <div className="field">
+        <div className="field" data-prd="pcc-name">
           <label className="field-label">玩法名称</label>
           <input
             className="text-input"
@@ -31,7 +33,7 @@ export default function PlayCardConfig({ play, onChange }) {
             placeholder="e.g. 真心话"
             onChange={(e) => set({ name: e.target.value })}
           />
-          <div className="pcc-title-upload">
+          <div className="pcc-title-upload" data-prd="pcc-title-img">
             <button type="button" className="img-btn" onClick={() => titleInput.current?.click()}>
               {play.nameImageUrl ? '替换标题图' : '上传标题图'}
             </button>
@@ -54,7 +56,7 @@ export default function PlayCardConfig({ play, onChange }) {
           />
         </div>
 
-        <div className="field">
+        <div className="field" data-prd="pcc-intro">
           <label className="field-label">玩法介绍文案</label>
           <input
             className="text-input"
@@ -65,7 +67,7 @@ export default function PlayCardConfig({ play, onChange }) {
         </div>
 
         <div className="field-row">
-          <div className="field">
+          <div className="field" data-prd="pcc-button">
             <label className="field-label">按钮文案</label>
             <input
               className="text-input"
@@ -74,7 +76,7 @@ export default function PlayCardConfig({ play, onChange }) {
               onChange={(e) => set({ buttonText: e.target.value })}
             />
           </div>
-          <div className="field">
+          <div className="field" data-prd="pcc-target">
             <label className="field-label">点击跳转玩法</label>
             <select
               className="text-input"
@@ -89,7 +91,32 @@ export default function PlayCardConfig({ play, onChange }) {
           </div>
         </div>
 
-        <div className="field">
+        <div className="field" data-prd="pcc-button-bg">
+          <label className="field-label">按钮背景（可选）</label>
+          <div className="pcc-img-row">
+            <button type="button" className="img-btn" onClick={() => buttonInput.current?.click()}>
+              {play.buttonBgUrl ? '替换按钮背景' : '上传按钮背景'}
+            </button>
+            {play.buttonBgUrl && (
+              <>
+                <img className="pcc-title-thumb" src={play.buttonBgUrl} alt="button bg" />
+                <button type="button" className="img-btn danger" onClick={() => set({ buttonBgUrl: '' })}>
+                  移除
+                </button>
+              </>
+            )}
+            <span className="field-hint">建议 PNG 透明底，360 × 96 px，≤ 1MB，留空用默认渐变按钮</span>
+          </div>
+          <input
+            ref={buttonInput}
+            type="file"
+            accept="image/png,image/webp,image/svg+xml"
+            hidden
+            onChange={(e) => handleButtonImage(e.target.files?.[0])}
+          />
+        </div>
+
+        <div className="field" data-prd="pcc-bg">
           <label className="field-label">卡片背景图（可选）</label>
           <div className="pcc-img-row">
             <button type="button" className="img-btn" onClick={() => imgInput.current?.click()}>
@@ -113,7 +140,7 @@ export default function PlayCardConfig({ play, onChange }) {
       </div>
 
       {/* 消息流预览 */}
-      <div className="pcc-preview">
+      <div className="pcc-preview" data-prd="pcc-preview">
         <div className="pcc-phone">
           <div className="pcc-chat">
             <div className="pcc-bubble left">在吗？给你准备了礼物 🎁</div>
@@ -127,7 +154,12 @@ export default function PlayCardConfig({ play, onChange }) {
                   <div className="pcc-card-name">{play.name || '玩法名称'}</div>
                 )}
                 <div className="pcc-card-intro">{play.intro || '玩法介绍文案…'}</div>
-                <div className="pcc-card-btn">{play.buttonText || '按钮文案'}</div>
+                <div
+                  className={`pcc-card-btn ${play.buttonBgUrl ? 'has-bg' : ''}`}
+                  style={play.buttonBgUrl ? { backgroundImage: `url(${play.buttonBgUrl})` } : undefined}
+                >
+                  {play.buttonText || '按钮文案'}
+                </div>
               </div>
             </div>
 

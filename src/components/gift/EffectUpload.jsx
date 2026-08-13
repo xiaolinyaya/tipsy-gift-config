@@ -68,12 +68,13 @@ export default function EffectUpload({ value, fileName, effectType = 'local', gi
   return (
     <div className="fx">
       <div className="fx-left">
-        <div className="fx-type">
+        <div className="fx-type" data-prd="fx-type">
           {Object.entries(EFFECT_TYPES).map(([key, t]) => (
             <button
               key={key}
               type="button"
               className={`fx-type-btn ${effectType === key ? 'active' : ''}`}
+              data-prd={`fx-type-${key}`}
               onClick={() => onTypeChange?.(key)}
             >
               <span className="fx-type-label">{t.label}</span>
@@ -85,6 +86,7 @@ export default function EffectUpload({ value, fileName, effectType = 'local', gi
         <button
           type="button"
           className="fx-drop"
+          data-prd="fx-drop"
           onClick={() => inputRef.current?.click()}
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
@@ -117,7 +119,7 @@ export default function EffectUpload({ value, fileName, effectType = 'local', gi
       </div>
 
       {/* 聊天室范例预览 */}
-      <div className="fx-preview">
+      <div className="fx-preview" data-prd="fx-preview">
         <div className="fx-phone">
           <div className="fx-chat">
             <div className="fx-chat-header">
