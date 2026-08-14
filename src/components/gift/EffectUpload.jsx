@@ -7,42 +7,22 @@ import './EffectUpload.css'
 // generic card for lottie JSON (real lottie player wired later).
 const ACCEPT = 'image/gif,image/apng,image/webp,image/png,video/mp4,video/webm,application/json'
 
-// Two effect types with distinct specs. local = small animation anchored near
-// the gift/bubble; global = full-screen animation over the whole chat room.
-const EFFECT_TYPES = {
-  local: {
-    label: '局部动效',
-    desc: '在礼物/气泡附近的小范围播放',
-    maxMB: 3,
-    spec: [
-      '格式：GIF / APNG / WebP / Lottie(JSON)',
-      '尺寸：正方形，建议 300 × 300 px',
-      '时长：≤ 3 秒，建议循环',
-      '大小：≤ 3MB',
-      '背景：透明底',
-    ],
-  },
-  global: {
-    label: '全局动效',
-    desc: '全屏铺满，覆盖整个聊天室',
-    maxMB: 8,
-    spec: [
-      '格式：MP4(H.264) / WebM / APNG / Lottie(JSON)',
-      '尺寸：竖屏全屏，建议 750 × 1334 px',
-      '时长：≤ 5 秒，单次播放',
-      '大小：≤ 8MB',
-      '背景：透明或带 Alpha 通道，可叠加于聊天室之上',
-      '帧率：建议 30fps',
-    ],
-  },
-}
+// 动效统一为「宽度满宽、高度自适应」：横向铺满聊天室宽度，高度按素材比例自动撑开。
+const MAX_MB = 8
+const SPEC = [
+  '格式：GIF / APNG / WebP / MP4(H.264) / WebM / Lottie(JSON)',
+  '宽度：满宽铺满聊天室，建议 750px 宽',
+  '高度：按素材比例自适应，无固定高度',
+  '时长：≤ 5 秒，建议循环',
+  '大小：≤ 8MB',
+  '背景：透明或带 Alpha 通道，可叠加于聊天室之上',
+]
 
-export default function EffectUpload({ value, fileName, effectType = 'local', giftName, giftIcon, onChange, onTypeChange }) {
+export default function EffectUpload({ value, fileName, giftName, giftIcon, onChange }) {
   const inputRef = useRef(null)
   const [error, setError] = useState('')
   const [kind, setKind] = useState(guessKind(value, fileName))
   const [playKey, setPlayKey] = useState(0)
-  const type = EFFECT_TYPES[effectType] || EFFECT_TYPES.local
 
   function handleFile(file) {
     setError('')
@@ -52,8 +32,8 @@ export default function EffectUpload({ value, fileName, effectType = 'local', gi
       setError('支持 GIF / APNG / WebP / MP4 / WebM / Lottie(JSON)')
       return
     }
-    if (file.size > type.maxMB * 1024 * 1024) {
-      setError(`文件不能超过 ${type.maxMB}MB`)
+    if (file.size > MAX_MB * 1024 * 1024) {
+      setError(`文件不能超过 ${MAX_MB}MB`)
       return
     }
     const reader = new FileReader()
@@ -68,21 +48,6 @@ export default function EffectUpload({ value, fileName, effectType = 'local', gi
   return (
     <div className="fx">
       <div className="fx-left">
-        <div className="fx-type" data-prd="fx-type">
-          {Object.entries(EFFECT_TYPES).map(([key, t]) => (
-            <button
-              key={key}
-              type="button"
-              className={`fx-type-btn ${effectType === key ? 'active' : ''}`}
-              data-prd={`fx-type-${key}`}
-              onClick={() => onTypeChange?.(key)}
-            >
-              <span className="fx-type-label">{t.label}</span>
-              <span className="fx-type-desc">{t.desc}</span>
-            </button>
-          ))}
-        </div>
-
         <button
           type="button"
           className="fx-drop"
@@ -101,9 +66,9 @@ export default function EffectUpload({ value, fileName, effectType = 'local', gi
         <input ref={inputRef} type="file" accept={ACCEPT} hidden onChange={(e) => handleFile(e.target.files?.[0])} />
 
         <div className="spec-box">
-          <div className="spec-title">{type.label}规范</div>
+          <div className="spec-title">动效规范</div>
           <ul className="spec-list">
-            {type.spec.map((line) => (
+            {SPEC.map((line) => (
               <li key={line}>{line}</li>
             ))}
           </ul>
@@ -130,12 +95,12 @@ export default function EffectUpload({ value, fileName, effectType = 'local', gi
               <div className="fx-bubble left">在吗？给你准备了礼物 🎁</div>
               <div className="fx-bubble right">收到啦～</div>
 
-              {/* 动效层：局部动效锚定在礼物位小范围，全局动效全屏铺满 */}
-              <div className={`fx-stage fx-stage-${effectType}`} key={playKey}>
+              {/* 动效层：满宽铺满，高度按素材比例自适应 */}
+              <div className="fx-stage" key={playKey}>
                 {value ? (
                   <EffectMedia kind={kind} src={value} />
                 ) : (
-                  <div className="fx-stage-empty">上传后在此预览{type.label}</div>
+                  <div className="fx-stage-empty">上传后在此预览动效（满宽 · 高度自适应）</div>
                 )}
               </div>
 

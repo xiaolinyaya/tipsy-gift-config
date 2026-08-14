@@ -1,24 +1,6 @@
 .fx { display: flex; gap: 24px; align-items: flex-start; }
 .fx-left { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 
-.fx-type { display: flex; gap: 10px; }
-.fx-type-btn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  text-align: left;
-  background: #fff;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px 14px;
-  transition: border-color 0.15s, background 0.15s;
-}
-.fx-type-btn:hover { border-color: #d1d5db; }
-.fx-type-btn.active { border-color: #1a1a1a; background: #fafafa; }
-.fx-type-label { font-size: 14px; font-weight: 600; color: #1a1a1a; }
-.fx-type-desc { font-size: 12px; color: #9ca3af; }
-
 .fx-drop {
   border: 1.5px dashed #d1d5db;
   border-radius: 12px;
@@ -85,44 +67,34 @@
 .fx-bubble.left { align-self: flex-start; background: #fff; color: #1a1a1a; border-bottom-left-radius: 4px; }
 .fx-bubble.right { align-self: flex-end; background: #1a1a1a; color: #fff; border-bottom-right-radius: 4px; }
 
+/* 动效：满宽铺满聊天室，高度按素材比例自适应 */
 .fx-stage {
-  position: absolute;
+  margin: 4px -14px;
+  width: calc(100% + 28px);
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   animation: fxpop 0.4s ease;
 }
-/* 全局动效：全屏铺满 */
-.fx-stage-global { inset: 0; }
-/* 局部动效：锚定在底部礼物位上方的小范围 */
-.fx-stage-local {
-  left: 50%;
-  bottom: 52px;
-  transform: translateX(-50%);
-  width: 108px;
-  height: 108px;
-}
-.fx-stage-local .fx-media,
-.fx-stage-local .fx-stage-empty { max-width: 108px; max-height: 108px; }
-.fx-stage-local .fx-stage-empty { font-size: 11px; text-align: center; }
-@keyframes fxpop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-.fx-media { max-width: 100%; max-height: 100%; object-fit: contain; }
+@keyframes fxpop { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+.fx-media { width: 100%; height: auto; display: block; object-fit: contain; }
 .fx-stage-empty {
+  width: 100%;
+  text-align: center;
   font-size: 12px;
   color: #9ca3af;
   background: rgba(255, 255, 255, 0.6);
-  padding: 8px 12px;
-  border-radius: 10px;
+  padding: 18px 12px;
 }
 
 .fx-lottie {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   background: rgba(255, 255, 255, 0.85);
-  border-radius: 12px;
   padding: 16px;
   text-align: center;
   color: #4f46e5;

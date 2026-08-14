@@ -336,10 +336,8 @@ export default function GiftEditPage({ giftId, onDone }) {
             <EffectUpload
               value={form.effectUrl}
               fileName={form.effect}
-              effectType={form.effectType || 'local'}
               giftName={form.names?.zh || form.nameEn}
               giftIcon={form.iconUrl ? '' : form.emoji}
-              onTypeChange={(effectType) => set({ effectType })}
               onChange={(effectUrl, fileName) => set({ effectUrl, effect: fileName })}
             />
           </div>
