@@ -19,7 +19,7 @@ function blankGift() {
     price: 0, intimacy: 0,
     hasStock: false, obtainWays: [],
     dropConfig: { rate: 0, amount: 1 },
-    checkinConfig: { times: 1, amount: 1 },
+    checkinConfig: { times: 1, amount: 1, startAt: '', endAt: '' },
     stockExpireDays: 0, stockMaxHold: 0,
     specialBubble: false, bubbleText: '', bubbleBgUrl: '',
     bubbleSticker: false, bubbleStickerUrl: '', stickerAnchor: 'top-right',

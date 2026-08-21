@@ -13,7 +13,7 @@
 //   hasStock      bool — 支持库存：用户可免费攒该礼物到背包，送礼时优先扣库存
 //   obtainWays    string[] — 免费获取途径 keys: drop | checkin | gempack
 //   dropConfig    { rate, amount } — 聊天掉落概率(%)与单次数量
-//   checkinConfig { times, amount } — 签到可领取次数与每次数量
+//   checkinConfig { times, amount, startAt, endAt } — 签到次数/每次数量/可领取时间段
 //   stockExpireDays  number — 库存有效期天数，0 = 永久
 //   stockMaxHold  number — 单用户持有上限，0 = 不限
 //   specialBubble bool — when true, bubbleText is shown/used
@@ -35,7 +35,7 @@ export const SEED_GIFTS = [
     price: 1, intimacy: 1,
     hasStock: true, obtainWays: ['drop', 'checkin'],
     dropConfig: { rate: 2, amount: 1 },
-    checkinConfig: { times: 1, amount: 5 },
+    checkinConfig: { times: 1, amount: 5, startAt: '', endAt: '' },
     stockExpireDays: 0, stockMaxHold: 0,
     specialBubble: false, bubbleText: '',
     charReply: false, replyPrompt: '',
@@ -90,7 +90,7 @@ export const SEED_GIFTS = [
     price: 66, intimacy: 66,
     hasStock: true, obtainWays: ['checkin', 'gempack'],
     dropConfig: { rate: 0, amount: 1 },
-    checkinConfig: { times: 1, amount: 1 },
+    checkinConfig: { times: 1, amount: 1, startAt: isoOffsetDays(-1), endAt: isoOffsetDays(2) },
     stockExpireDays: 7, stockMaxHold: 20,
     specialBubble: true, bubbleText: '这束玫瑰只为你盛开 🌹',
     bubbleSticker: false, bubbleStickerUrl: '', stickerAnchor: 'top-right',

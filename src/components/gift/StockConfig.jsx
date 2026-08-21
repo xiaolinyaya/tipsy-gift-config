@@ -1,4 +1,5 @@
 import { OBTAIN_WAYS, DROP_TRIGGER_GEMS } from '../../data/obtainWays'
+import { toLocalInput } from '../../data/eventTime'
 import './StockConfig.css'
 
 // 库存配置：礼物支持攒在用户背包时，配置免费获取途径 + 各途径的发放参数，
@@ -21,8 +22,8 @@ export default function StockConfig({
 
   return (
     <div className="field conditional" data-prd="edit-stock-config">
-      <label className="field-label">免费获取途径</label>
-      <p className="stk-note">勾选该礼物可以通过哪些行为免费发放到用户背包，勾选后配置对应发放参数。</p>
+      <label className="field-label">获取途径</label>
+      <p className="stk-note">勾选该礼物可以通过哪些行为发放到用户背包，勾选后配置对应发放参数。</p>
 
       <div className="stock-ways">
         {OBTAIN_WAYS.map((w) => {
@@ -155,17 +156,49 @@ function DropConfig({ drop, onChange }) {
   )
 }
 
-// 签到：目前只有活动期间第一次签到可领取，所以次数与每次数量都要能配。
+// 签到：在配置的时间段内签到可领取，次数与每次数量都能配。
 function CheckinConfig({ checkin, onChange }) {
   const times = checkin?.times ?? 1
   const amount = checkin?.amount ?? 1
-  const set = (patch) => onChange({ times, amount, ...patch })
+  const startAt = checkin?.startAt || ''
+  const endAt = checkin?.endAt || ''
+  const set = (patch) => onChange({ times, amount, startAt, endAt, ...patch })
+  const rangeInvalid = startAt && endAt && new Date(endAt) <= new Date(startAt)
 
   return (
     <div className="way-config" data-prd="stock-checkin-config">
       <p className="way-config-note">
-        活动期间签到发放。当前机制为活动内第一次签到即可领取，可领取次数默认 1 次。
+        在下方时间段内签到即可领取，超出时间段不再发放。
       </p>
+
+      <div className="way-config-row" data-prd="stock-checkin-range">
+        <div className="way-field">
+          <label className="sub-label">可领取开始时间</label>
+          <input
+            className="text-input"
+            type="datetime-local"
+            value={toLocalInput(startAt)}
+            onChange={(e) => set({ startAt: e.target.value })}
+          />
+        </div>
+        <div className="way-field">
+          <label className="sub-label">可领取结束时间</label>
+          <input
+            className="text-input"
+            type="datetime-local"
+            value={toLocalInput(endAt)}
+            onChange={(e) => set({ endAt: e.target.value })}
+          />
+        </div>
+      </div>
+      {rangeInvalid ? (
+        <p className="way-config-warn">结束时间早于开始时间，签到不会发放该礼物。</p>
+      ) : (
+        !startAt && !endAt && (
+          <p className="way-config-note">留空表示不限时间段，签到长期可领取。</p>
+        )
+      )}
+
       <div className="way-config-row">
         <div className="way-field">
           <label className="sub-label">可领取次数</label>
@@ -190,7 +223,7 @@ function CheckinConfig({ checkin, onChange }) {
       </div>
       {times > 0 ? (
         <p className="way-config-calc">
-          单用户整个活动期最多通过签到获得 {times * amount} 个。
+          单用户在该时间段内最多通过签到获得 {times * amount} 个。
         </p>
       ) : (
         <p className="way-config-warn">可领取次数为 0，签到不会发放该礼物。</p>

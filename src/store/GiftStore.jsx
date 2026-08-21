@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { SEED_GIFTS } from '../data/gifts'
 import { autoTranslate } from '../data/autoTranslate'
 
-// v4: 获取途径收敛为聊天掉落 / 签到 / 宝石包购买，新增 dropConfig / checkinConfig。
-const KEY = 'tipsy.gifts.v4'
+// v5: 签到新增可领取时间段 (checkinConfig.startAt / endAt)。
+const KEY = 'tipsy.gifts.v5'
 
 // 仅这三种途径有效，旧数据里的 task/event/lottery/exchange/gift 会被过滤掉。
 const VALID_WAYS = new Set(['drop', 'checkin', 'gempack'])
@@ -35,7 +35,7 @@ function normalize(gift) {
     hasStock: gift.hasStock ?? false,
     obtainWays: (gift.obtainWays || []).filter((w) => VALID_WAYS.has(w)),
     dropConfig: { rate: 0, amount: 1, ...(gift.dropConfig || {}) },
-    checkinConfig: { times: 1, amount: 1, ...(gift.checkinConfig || {}) },
+    checkinConfig: { times: 1, amount: 1, startAt: '', endAt: '', ...(gift.checkinConfig || {}) },
     stockExpireDays: gift.stockExpireDays ?? 0,
     stockMaxHold: gift.stockMaxHold ?? 0,
     // 活动时间
