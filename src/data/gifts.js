@@ -8,6 +8,7 @@
 //   category      'daily' | 'event'   (event gifts show an 活动 badge)
 //   eventStartAt  ISO-ish local datetime string — 活动开始 (event only)
 //   eventEndAt    ISO-ish local datetime string — 活动结束; ≤3 天时标签转倒计时
+//   showInChat    bool — 在聊天室内显示 (event only)；全局同时只能有一个礼物开启
 //   price         number (Gems)
 //   intimacy      number (+N intimacy added when sent)
 //   hasStock      bool — 支持库存：用户可免费攒该礼物到背包，送礼时优先扣库存
@@ -84,6 +85,7 @@ export const SEED_GIFTS = [
     id: 'rose-fest', emoji: '🌹', nameEn: 'Festival Rose', category: 'event',
     eventStartAt: isoOffsetDays(-1),
     eventEndAt: isoOffsetDays(2),
+    showInChat: true,
     price: 66, intimacy: 66,
     hasStock: true, obtainWays: ['checkin', 'gempack'],
     dropConfig: { rate: 0, amount: 1 },

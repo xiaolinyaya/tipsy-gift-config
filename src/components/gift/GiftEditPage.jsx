@@ -14,7 +14,7 @@ function blankGift() {
   return {
     id: `gift_${Math.random().toString(36).slice(2, 8)}`,
     emoji: '🎁', iconUrl: '', nameEn: '', names: {}, category: 'daily',
-    eventBadgeUrl: '', eventStartAt: '', eventEndAt: '',
+    eventBadgeUrl: '', eventStartAt: '', eventEndAt: '', showInChat: false,
     price: 0, intimacy: 0,
     hasStock: false, obtainWays: [],
     dropConfig: { rate: 0, amount: 1 },
@@ -32,12 +32,26 @@ function blankGift() {
 }
 
 export default function GiftEditPage({ giftId, onDone }) {
-  const { get, upsert, remove } = useGifts()
+  const { get, upsert, remove, gifts } = useGifts()
   const isNew = !giftId
   const [form, setForm] = useState(() => (giftId ? { ...get(giftId) } : blankGift()))
   const [toast, setToast] = useState(null)
 
   const set = (patch) => setForm((f) => ({ ...f, ...patch }))
+
+  // 聊天室内同时只能展示一个礼物，这里找出当前占位的那一个（如果不是自己）。
+  const chatHolder = gifts.find((g) => g.showInChat && g.id !== form.id)
+
+  function toggleShowInChat() {
+    if (form.showInChat) {
+      set({ showInChat: false })
+      return
+    }
+    set({ showInChat: true })
+    if (chatHolder) {
+      showToast(`聊天室内只能显示一个礼物，保存后将替换「${chatHolder.nameEn || chatHolder.id}」`)
+    }
+  }
 
   function showToast(message) {
     setToast(message)
@@ -230,7 +244,7 @@ export default function GiftEditPage({ giftId, onDone }) {
             <button
               type="button"
               className={`cat-option ${form.category === 'daily' ? 'active' : ''}`}
-              onClick={() => set({ category: 'daily' })}
+              onClick={() => set({ category: 'daily', showInChat: false })}
             >
               <span className="cat-option-radio" />
               <span className="cat-option-body">
@@ -304,6 +318,29 @@ export default function GiftEditPage({ giftId, onDone }) {
               </div>
             </div>
           </div>
+        )}
+
+        {form.category === 'event' && (
+          <>
+            <div className="switch-row" data-prd="edit-show-in-chat">
+              <div className="switch-label">
+                <span>是否在聊天室内显示</span>
+                <span className="switch-desc">开关开启后，礼物将在聊天室内显示，聊天室内只能显示一个礼物</span>
+              </div>
+              <button
+                type="button"
+                className={`switch ${form.showInChat ? 'on' : ''}`}
+                onClick={toggleShowInChat}
+              >
+                <span className="knob" />
+              </button>
+            </div>
+            {form.showInChat && chatHolder && (
+              <p className="field-note warn" data-prd="edit-show-in-chat-note">
+                保存后将取代「{chatHolder.nameEn || chatHolder.id}」在聊天室内的展示位。
+              </p>
+            )}
+          </>
         )}
       </section>
 

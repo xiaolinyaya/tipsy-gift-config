@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { SEED_GIFTS } from '../data/gifts'
 import { autoTranslate } from '../data/autoTranslate'
 
-// v6: 移除气泡贴纸配置 (bubbleSticker / bubbleStickerUrl / stickerAnchor)。
-const KEY = 'tipsy.gifts.v6'
+// v7: 活动礼物新增「是否在聊天室内显示」(showInChat)，全局互斥。
+const KEY = 'tipsy.gifts.v7'
 
 // 仅这三种途径有效，旧数据里的 task/event/lottery/exchange/gift 会被过滤掉。
 const VALID_WAYS = new Set(['drop', 'checkin', 'gempack'])
@@ -41,13 +41,26 @@ function normalize(gift) {
     // 活动时间
     eventStartAt: gift.eventStartAt || '',
     eventEndAt: gift.eventEndAt || '',
+    // 聊天室内展示位，仅活动礼物可开，全局最多一个
+    showInChat: gift.category === 'event' ? gift.showInChat ?? false : false,
   }
+}
+
+// 聊天室内展示位是互斥的；旧数据若有多个开启，只保留第一个。
+function dedupeChatSlot(list) {
+  let taken = false
+  return list.map((g) => {
+    if (!g.showInChat) return g
+    if (taken) return { ...g, showInChat: false }
+    taken = true
+    return g
+  })
 }
 
 function load() {
   try {
     const raw = localStorage.getItem(KEY)
-    if (raw) return JSON.parse(raw).map(normalize)
+    if (raw) return dedupeChatSlot(JSON.parse(raw).map(normalize))
   } catch {
     // ignore corrupt storage; fall back to seed
   }
@@ -79,10 +92,10 @@ export function GiftProvider({ children }) {
     upsert: (gift) =>
       setGifts((prev) => {
         const i = prev.findIndex((g) => g.id === gift.id)
-        if (i === -1) return [...prev, gift]
-        const next = [...prev]
-        next[i] = gift
-        return next
+        const next = i === -1 ? [...prev, gift] : prev.map((g, idx) => (idx === i ? gift : g))
+        // 聊天室内只能显示一个礼物：新占位的礼物顶掉之前那个。
+        if (!gift.showInChat) return next
+        return next.map((g) => (g.id === gift.id || !g.showInChat ? g : { ...g, showInChat: false }))
       }),
     remove: (id) => setGifts((prev) => prev.filter((g) => g.id !== id)),
     setStatus: (id, status) =>
