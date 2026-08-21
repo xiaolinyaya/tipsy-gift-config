@@ -7,6 +7,7 @@ import AutoTextarea from './AutoTextarea'
 import PlayCardConfig from './PlayCardConfig'
 import StockConfig from './StockConfig'
 import EventBadgePreview from './EventBadgePreview'
+import ChatIconPreview from './ChatIconPreview'
 import { toLocalInput } from '../../data/eventTime'
 import './GiftEditPage.css'
 
@@ -14,7 +15,8 @@ function blankGift() {
   return {
     id: `gift_${Math.random().toString(36).slice(2, 8)}`,
     emoji: '🎁', iconUrl: '', nameEn: '', names: {}, category: 'daily',
-    eventBadgeUrl: '', eventStartAt: '', eventEndAt: '', showInChat: false,
+    eventBadgeUrl: '', eventStartAt: '', eventEndAt: '',
+    showInChat: false, chatIconUrl: '',
     price: 0, intimacy: 0,
     hasStock: false, obtainWays: [],
     dropConfig: { rate: 0, amount: 1 },
@@ -44,6 +46,7 @@ export default function GiftEditPage({ giftId, onDone }) {
 
   function toggleShowInChat() {
     if (form.showInChat) {
+      // 只收起入口，保留已上传的展示图，避免误点丢素材。
       set({ showInChat: false })
       return
     }
@@ -339,6 +342,30 @@ export default function GiftEditPage({ giftId, onDone }) {
               <p className="field-note warn" data-prd="edit-show-in-chat-note">
                 保存后将取代「{chatHolder.nameEn || chatHolder.id}」在聊天室内的展示位。
               </p>
+            )}
+            {form.showInChat && (
+              <div className="field conditional" data-prd="edit-chat-icon">
+                <label className="field-label">聊天室展示图</label>
+                <div className="upload-with-spec">
+                  <ImageUpload
+                    value={form.chatIconUrl}
+                    onChange={(chatIconUrl) => set({ chatIconUrl })}
+                    size={72}
+                  />
+                  <div className="spec-box">
+                    <div className="spec-title">聊天室展示图规范</div>
+                    <ul className="spec-list">
+                      <li>格式：PNG / WebP / APNG（透明背景）</li>
+                      <li>尺寸：正方形，建议 168 × 168 px</li>
+                      <li>大小：≤ 1MB</li>
+                      <li>用途：聊天室内展示该礼物的入口图，点击进入送礼</li>
+                      <li>留白：主体居中，四周留 ~8% 安全边距</li>
+                    </ul>
+                    <p className="spec-fallback">留空则沿用礼物图标，聊天室内可能因尺寸不匹配显示偏小。</p>
+                  </div>
+                </div>
+                <ChatIconPreview iconUrl={form.chatIconUrl || form.iconUrl} emoji={form.emoji} />
+              </div>
             )}
           </>
         )}

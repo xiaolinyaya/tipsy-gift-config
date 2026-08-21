@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { SEED_GIFTS } from '../data/gifts'
 import { autoTranslate } from '../data/autoTranslate'
 
-// v7: 活动礼物新增「是否在聊天室内显示」(showInChat)，全局互斥。
-const KEY = 'tipsy.gifts.v7'
+// v8: 聊天室展示位新增展示图 (chatIconUrl)。
+const KEY = 'tipsy.gifts.v8'
 
 // 仅这三种途径有效，旧数据里的 task/event/lottery/exchange/gift 会被过滤掉。
 const VALID_WAYS = new Set(['drop', 'checkin', 'gempack'])
@@ -43,6 +43,7 @@ function normalize(gift) {
     eventEndAt: gift.eventEndAt || '',
     // 聊天室内展示位，仅活动礼物可开，全局最多一个
     showInChat: gift.category === 'event' ? gift.showInChat ?? false : false,
+    chatIconUrl: gift.chatIconUrl || '',
   }
 }
 
