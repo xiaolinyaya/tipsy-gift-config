@@ -7,7 +7,6 @@ import AutoTextarea from './AutoTextarea'
 import PlayCardConfig from './PlayCardConfig'
 import StockConfig from './StockConfig'
 import EventBadgePreview from './EventBadgePreview'
-import ChatIconPreview from './ChatIconPreview'
 import { toLocalInput } from '../../data/eventTime'
 import './GiftEditPage.css'
 
@@ -364,7 +363,6 @@ export default function GiftEditPage({ giftId, onDone }) {
                     <p className="spec-fallback">留空则沿用礼物图标，聊天室内可能因尺寸不匹配显示偏小。</p>
                   </div>
                 </div>
-                <ChatIconPreview iconUrl={form.chatIconUrl || form.iconUrl} emoji={form.emoji} />
               </div>
             )}
           </>
