@@ -7,14 +7,14 @@ import AutoTextarea from './AutoTextarea'
 import PlayCardConfig from './PlayCardConfig'
 import StockConfig from './StockConfig'
 import EventBadgePreview from './EventBadgePreview'
-import { toLocalInput } from '../../data/eventTime'
+import { toLocalInput, COUNTDOWN_DAYS } from '../../data/eventTime'
 import './GiftEditPage.css'
 
 function blankGift() {
   return {
     id: `gift_${Math.random().toString(36).slice(2, 8)}`,
     emoji: '🎁', iconUrl: '', nameEn: '', names: {}, category: 'daily',
-    eventBadgeUrl: '', eventStartAt: '', eventEndAt: '',
+    eventBadgeUrl: '', eventBadgeText: '', eventStartAt: '', eventEndAt: '',
     showInChat: false, chatIconUrl: '',
     price: 0, intimacy: 0,
     hasStock: false, obtainWays: [],
@@ -302,22 +302,43 @@ export default function GiftEditPage({ giftId, onDone }) {
         {form.category === 'event' && (
           <div className="field conditional" data-prd="edit-event-badge">
             <label className="field-label">活动标签样式</label>
-            <div className="upload-with-spec">
-              <ImageUpload
-                value={form.eventBadgeUrl}
-                onChange={(eventBadgeUrl) => set({ eventBadgeUrl })}
-                size={72}
-              />
-              <div className="spec-box">
-                <div className="spec-title">活动标签规范</div>
-                <ul className="spec-list">
-                  <li>格式：PNG / WebP / SVG（透明背景）</li>
-                  <li>尺寸：横向，建议 120 × 48 px</li>
-                  <li>大小：≤ 1MB</li>
-                  <li>用途：叠加在礼物图标角标位，替代默认「活动」文字标签</li>
-                </ul>
-                <p className="spec-fallback">留空则使用系统默认「活动」文字标签。</p>
+
+            <div className="sub-field" data-prd="edit-event-badge-bg">
+              <label className="sub-label">活动 Tag 背景</label>
+              <div className="upload-with-spec">
+                <ImageUpload
+                  value={form.eventBadgeUrl}
+                  onChange={(eventBadgeUrl) => set({ eventBadgeUrl })}
+                  size={72}
+                />
+                <div className="spec-box">
+                  <div className="spec-title">活动 Tag 背景规范</div>
+                  <ul className="spec-list">
+                    <li>格式：PNG / WebP / SVG（透明背景，支持横向拉伸）</li>
+                    <li>尺寸：横向，建议 120 × 48 px</li>
+                    <li>大小：≤ 1MB</li>
+                    <li>用途：叠加在礼物图标角标位，作为标签底图</li>
+                    <li>留白：文字安全区左右各留 ~12% 边距</li>
+                  </ul>
+                  <p className="spec-fallback">留空则使用系统默认标签底色。</p>
+                </div>
               </div>
+            </div>
+
+            <div className="sub-field" data-prd="edit-event-badge-text">
+              <label className="sub-label">活动 Tag 文案</label>
+              <input
+                className="text-input"
+                type="text"
+                maxLength={6}
+                placeholder="活动"
+                value={form.eventBadgeText}
+                onChange={(e) => set({ eventBadgeText: e.target.value })}
+              />
+              <p className="sub-hint">
+                叠加在 Tag 背景上的文字，建议 ≤ 4 个字。留空则显示默认「活动」。
+                进入最后 {COUNTDOWN_DAYS} 天后该位置会被倒计时替换。
+              </p>
             </div>
           </div>
         )}

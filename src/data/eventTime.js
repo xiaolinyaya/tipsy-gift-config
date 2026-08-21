@@ -19,7 +19,9 @@ export function eventBadgeState(gift, now = Date.now()) {
   if (gift?.category !== 'event') return { kind: 'none' }
   const { eventStartAt, eventEndAt } = gift
   const left = msLeft(eventEndAt, now)
-  if (left === null) return { kind: 'normal', text: '活动' }
+  // 普通态文案可在后台自定义，留空回落到默认「活动」。
+  const label = gift.eventBadgeText?.trim() || '活动'
+  if (left === null) return { kind: 'normal', text: label }
   if (left <= 0) return { kind: 'ended', text: '已结束' }
 
   if (eventStartAt) {
@@ -32,7 +34,7 @@ export function eventBadgeState(gift, now = Date.now()) {
   if (left <= COUNTDOWN_DAYS * 24 * 3600 * 1000) {
     return { kind: 'countdown', text: formatCountdown(left), left }
   }
-  return { kind: 'normal', text: '活动', left }
+  return { kind: 'normal', text: label, left }
 }
 
 // 倒计时文案：>1 天显示「剩 2天3小时」，<1 天显示「剩 5:04:11」。

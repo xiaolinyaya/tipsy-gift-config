@@ -264,3 +264,16 @@
   color: #9ca3af;
   margin-bottom: 6px;
 }
+
+/* 条件区内的二级分区（活动标签的 Tag 背景 / Tag 文案） */
+.sub-field + .sub-field {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed #e5e7eb;
+}
+.sub-hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #9ca3af;
+  line-height: 1.6;
+}

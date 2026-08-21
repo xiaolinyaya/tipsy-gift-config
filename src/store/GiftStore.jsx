@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { SEED_GIFTS } from '../data/gifts'
 import { autoTranslate } from '../data/autoTranslate'
 
-// v8: 聊天室展示位新增展示图 (chatIconUrl)。
-const KEY = 'tipsy.gifts.v8'
+// v9: 活动标签拆为 Tag 背景 + Tag 文案 (eventBadgeText)。
+const KEY = 'tipsy.gifts.v9'
 
 // 仅这三种途径有效，旧数据里的 task/event/lottery/exchange/gift 会被过滤掉。
 const VALID_WAYS = new Set(['drop', 'checkin', 'gempack'])
@@ -38,9 +38,11 @@ function normalize(gift) {
     checkinConfig: { times: 1, amount: 1, startAt: '', endAt: '', ...(gift.checkinConfig || {}) },
     stockExpireDays: gift.stockExpireDays ?? 0,
     stockMaxHold: gift.stockMaxHold ?? 0,
-    // 活动时间
+    // 活动时间与标签样式
     eventStartAt: gift.eventStartAt || '',
     eventEndAt: gift.eventEndAt || '',
+    eventBadgeUrl: gift.eventBadgeUrl || '',
+    eventBadgeText: gift.eventBadgeText || '',
     // 聊天室内展示位，仅活动礼物可开，全局最多一个
     showInChat: gift.category === 'event' ? gift.showInChat ?? false : false,
     chatIconUrl: gift.chatIconUrl || '',

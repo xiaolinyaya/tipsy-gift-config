@@ -11,7 +11,7 @@ function EventBadge({ gift, now }) {
   }
   if (state.kind === 'ended') return <span className="badge-ended">已结束</span>
   if (state.kind === 'upcoming') return <span className="badge-upcoming">未开始</span>
-  return <span className="badge-event">活动</span>
+  return <span className="badge-event">{state.text}</span>
 }
 
 const TABS = [
