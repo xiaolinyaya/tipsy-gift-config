@@ -192,3 +192,34 @@
   padding: 0;
 }
 .link-edit:hover { text-decoration: underline; }
+
+/* 活动倒计时标签：进入最后 3 天时替代普通「活动」标签 */
+.badge-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.badge-upcoming {
+  background: #e0e7ff;
+  color: #4338ca;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.badge-ended {
+  background: #f3f4f6;
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}

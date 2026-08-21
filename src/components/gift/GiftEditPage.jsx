@@ -5,15 +5,20 @@ import ImageUpload from './ImageUpload'
 import EffectUpload from './EffectUpload'
 import AutoTextarea from './AutoTextarea'
 import PlayCardConfig from './PlayCardConfig'
+import BubbleStickerConfig from './BubbleStickerConfig'
+import EventBadgePreview from './EventBadgePreview'
+import { toLocalInput } from '../../data/eventTime'
 import './GiftEditPage.css'
 
 function blankGift() {
   return {
     id: `gift_${Math.random().toString(36).slice(2, 8)}`,
     emoji: '🎁', iconUrl: '', nameEn: '', names: {}, category: 'daily',
-    eventBadgeUrl: '',
+    eventBadgeUrl: '', eventStartAt: '', eventEndAt: '',
     price: 0, intimacy: 0,
+    hasStock: false, stock: 0,
     specialBubble: false, bubbleText: '', bubbleBgUrl: '',
+    bubbleSticker: false, bubbleStickerUrl: '', stickerAnchor: 'top-right',
     charReply: false, replyPrompt: '',
     hasEffect: false, effectType: 'local', effect: '', effectUrl: '',
     hasPlay: false,
@@ -189,6 +194,33 @@ export default function GiftEditPage({ giftId, onDone }) {
           </div>
         </div>
 
+        <div className="switch-row" data-prd="edit-stock-switch">
+          <div className="switch-label">
+            <span>支持库存</span>
+            <span className="switch-desc">开启后该礼物限量发售，售罄自动从商城下架</span>
+          </div>
+          <button
+            type="button"
+            className={`switch ${form.hasStock ? 'on' : ''}`}
+            onClick={() => set({ hasStock: !form.hasStock })}
+          >
+            <span className="knob" />
+          </button>
+        </div>
+        {form.hasStock && (
+          <div className="field conditional" data-prd="edit-stock-config">
+            <label className="field-label">库存总量</label>
+            <input
+              className="text-input"
+              type="number"
+              min="0"
+              value={form.stock ?? 0}
+              onChange={(e) => set({ stock: Number(e.target.value) })}
+            />
+            <p className="spec-fallback">库存为 0 时礼物在商城显示为「已售罄」且不可购买。</p>
+          </div>
+        )}
+
         <div className="field" data-prd="edit-category">
           <label className="field-label">分类</label>
           <div className="cat-options">
@@ -220,6 +252,33 @@ export default function GiftEditPage({ giftId, onDone }) {
             </button>
           </div>
         </div>
+
+        {form.category === 'event' && (
+          <div className="field conditional" data-prd="edit-event-time">
+            <label className="field-label">活动时间</label>
+            <div className="field-row">
+              <div className="field">
+                <label className="sub-label">开始时间</label>
+                <input
+                  className="text-input"
+                  type="datetime-local"
+                  value={toLocalInput(form.eventStartAt)}
+                  onChange={(e) => set({ eventStartAt: e.target.value })}
+                />
+              </div>
+              <div className="field">
+                <label className="sub-label">结束时间</label>
+                <input
+                  className="text-input"
+                  type="datetime-local"
+                  value={toLocalInput(form.eventEndAt)}
+                  onChange={(e) => set({ eventEndAt: e.target.value })}
+                />
+              </div>
+            </div>
+            <EventBadgePreview gift={form} />
+          </div>
+        )}
 
         {form.category === 'event' && (
           <div className="field conditional" data-prd="edit-event-badge">
@@ -288,6 +347,33 @@ export default function GiftEditPage({ giftId, onDone }) {
                 </ul>
                 <p className="spec-fallback">留空则使用系统默认气泡样式。</p>
               </div>
+            </div>
+
+            <div className="sticker-block" data-prd="edit-bubble-sticker">
+              <div className="switch-row inner">
+                <div className="switch-label">
+                  <span>气泡贴纸 <span className="term-en">Bubble Sticker</span></span>
+                  <span className="switch-desc">叠在气泡上的小装饰，允许超出气泡边界（出血）</span>
+                </div>
+                <button
+                  type="button"
+                  className={`switch ${form.bubbleSticker ? 'on' : ''}`}
+                  onClick={() => set({ bubbleSticker: !form.bubbleSticker })}
+                >
+                  <span className="knob" />
+                </button>
+              </div>
+
+              {form.bubbleSticker && (
+                <BubbleStickerConfig
+                  stickerUrl={form.bubbleStickerUrl}
+                  anchor={form.stickerAnchor || 'top-right'}
+                  bubbleText={form.bubbleText}
+                  bubbleBgUrl={form.bubbleBgUrl}
+                  onStickerChange={(bubbleStickerUrl) => set({ bubbleStickerUrl })}
+                  onAnchorChange={(stickerAnchor) => set({ stickerAnchor })}
+                />
+              )}
             </div>
           </div>
         )}

@@ -1,0 +1,27 @@
+.evp {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+.evp-row { display: flex; align-items: center; gap: 12px; }
+.evp-label { font-size: 13px; color: #6b7280; }
+
+.evp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.evp-badge.kind-normal { background: #fce7f3; color: #db2777; }
+.evp-badge.kind-countdown { background: #fef3c7; color: #b45309; font-variant-numeric: tabular-nums; }
+.evp-badge.kind-upcoming { background: #e0e7ff; color: #4338ca; }
+.evp-badge.kind-ended { background: #f3f4f6; color: #9ca3af; }
+
+.evp-clock { font-size: 11px; }
+.evp-hint { margin-top: 8px; font-size: 12px; color: #9ca3af; line-height: 1.5; }

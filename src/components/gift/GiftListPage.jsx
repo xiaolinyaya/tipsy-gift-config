@@ -1,6 +1,18 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useGifts } from '../../store/GiftStore'
+import { eventBadgeState } from '../../data/eventTime'
 import './GiftListPage.css'
+
+// 活动标签：倒计时状态下每秒走字，其余状态静态展示。
+function EventBadge({ gift, now }) {
+  const state = eventBadgeState(gift, now)
+  if (state.kind === 'countdown') {
+    return <span className="badge-countdown">⏱ {state.text}</span>
+  }
+  if (state.kind === 'ended') return <span className="badge-ended">已结束</span>
+  if (state.kind === 'upcoming') return <span className="badge-upcoming">未开始</span>
+  return <span className="badge-event">活动</span>
+}
 
 const TABS = [
   { key: 'all', label: '全部' },
@@ -13,6 +25,13 @@ export default function GiftListPage({ onBack, onEdit, onCreate }) {
   const [tab, setTab] = useState('all')
   const [dragId, setDragId] = useState(null)
   const [overId, setOverId] = useState(null)
+  const [now, setNow] = useState(() => Date.now())
+
+  // 倒计时标签需要走字，整表每秒刷一次时间基准。
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(t)
+  }, [])
 
   const rows = useMemo(() => {
     // 已下架统一沉底；组内按 order 排。
@@ -119,7 +138,7 @@ export default function GiftListPage({ onBack, onEdit, onCreate }) {
 
             <span className="col-cat">
               {g.category === 'event' ? (
-                <span className="badge-event">活动</span>
+                <EventBadge gift={g} now={now} />
               ) : (
                 <span className="badge-daily">日常</span>
               )}
