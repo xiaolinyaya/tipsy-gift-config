@@ -6,7 +6,6 @@ import EffectUpload from './EffectUpload'
 import AutoTextarea from './AutoTextarea'
 import PlayCardConfig from './PlayCardConfig'
 import StockConfig from './StockConfig'
-import EventBadgePreview from './EventBadgePreview'
 import { toLocalInput, COUNTDOWN_DAYS } from '../../data/eventTime'
 import './GiftEditPage.css'
 
@@ -212,34 +211,6 @@ export default function GiftEditPage({ giftId, onDone }) {
           </div>
         </div>
 
-        <div className="switch-row" data-prd="edit-stock-switch">
-          <div className="switch-label">
-            <span>支持库存</span>
-            <span className="switch-desc">开启后用户可通过行为免费获得该礼物并存入背包，送礼时优先扣减库存，不消耗 Gems</span>
-          </div>
-          <button
-            type="button"
-            className={`switch ${form.hasStock ? 'on' : ''}`}
-            onClick={() => set({ hasStock: !form.hasStock })}
-          >
-            <span className="knob" />
-          </button>
-        </div>
-        {form.hasStock && (
-          <StockConfig
-            ways={form.obtainWays || []}
-            drop={form.dropConfig}
-            checkin={form.checkinConfig}
-            expireDays={form.stockExpireDays ?? 0}
-            maxHold={form.stockMaxHold ?? 0}
-            onWaysChange={(obtainWays) => set({ obtainWays })}
-            onDropChange={(dropConfig) => set({ dropConfig })}
-            onCheckinChange={(checkinConfig) => set({ checkinConfig })}
-            onExpireChange={(stockExpireDays) => set({ stockExpireDays })}
-            onMaxHoldChange={(stockMaxHold) => set({ stockMaxHold })}
-          />
-        )}
-
         <div className="field" data-prd="edit-category">
           <label className="field-label">分类</label>
           <div className="cat-options">
@@ -295,7 +266,6 @@ export default function GiftEditPage({ giftId, onDone }) {
                 />
               </div>
             </div>
-            <EventBadgePreview gift={form} />
           </div>
         )}
 
@@ -390,7 +360,40 @@ export default function GiftEditPage({ giftId, onDone }) {
         )}
       </section>
 
-      {/* 分组 2：互动（开关联动） */}
+      {/* 分组 2：库存 */}
+      <section className="edit-section" data-prd="edit-stock">
+        <h2 className="section-title">库存</h2>
+
+        <div className="switch-row" data-prd="edit-stock-switch">
+          <div className="switch-label">
+            <span>支持库存</span>
+            <span className="switch-desc">开启后用户可通过行为免费获得该礼物并存入背包，送礼时优先扣减库存，不消耗 Gems</span>
+          </div>
+          <button
+            type="button"
+            className={`switch ${form.hasStock ? 'on' : ''}`}
+            onClick={() => set({ hasStock: !form.hasStock })}
+          >
+            <span className="knob" />
+          </button>
+        </div>
+        {form.hasStock && (
+          <StockConfig
+            ways={form.obtainWays || []}
+            drop={form.dropConfig}
+            checkin={form.checkinConfig}
+            expireDays={form.stockExpireDays ?? 0}
+            maxHold={form.stockMaxHold ?? 0}
+            onWaysChange={(obtainWays) => set({ obtainWays })}
+            onDropChange={(dropConfig) => set({ dropConfig })}
+            onCheckinChange={(checkinConfig) => set({ checkinConfig })}
+            onExpireChange={(stockExpireDays) => set({ stockExpireDays })}
+            onMaxHoldChange={(stockMaxHold) => set({ stockMaxHold })}
+          />
+        )}
+      </section>
+
+      {/* 分组 3：互动（开关联动） */}
       <section className="edit-section" data-prd="edit-interaction">
         <h2 className="section-title">互动</h2>
 
