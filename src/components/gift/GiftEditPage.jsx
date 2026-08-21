@@ -17,7 +17,10 @@ function blankGift() {
     emoji: '🎁', iconUrl: '', nameEn: '', names: {}, category: 'daily',
     eventBadgeUrl: '', eventStartAt: '', eventEndAt: '',
     price: 0, intimacy: 0,
-    hasStock: false, obtainWays: [], stockExpireDays: 0, stockMaxHold: 0,
+    hasStock: false, obtainWays: [],
+    dropConfig: { rate: 0, amount: 1 },
+    checkinConfig: { times: 1, amount: 1 },
+    stockExpireDays: 0, stockMaxHold: 0,
     specialBubble: false, bubbleText: '', bubbleBgUrl: '',
     bubbleSticker: false, bubbleStickerUrl: '', stickerAnchor: 'top-right',
     charReply: false, replyPrompt: '',
@@ -211,9 +214,13 @@ export default function GiftEditPage({ giftId, onDone }) {
         {form.hasStock && (
           <StockConfig
             ways={form.obtainWays || []}
+            drop={form.dropConfig}
+            checkin={form.checkinConfig}
             expireDays={form.stockExpireDays ?? 0}
             maxHold={form.stockMaxHold ?? 0}
             onWaysChange={(obtainWays) => set({ obtainWays })}
+            onDropChange={(dropConfig) => set({ dropConfig })}
+            onCheckinChange={(checkinConfig) => set({ checkinConfig })}
             onExpireChange={(stockExpireDays) => set({ stockExpireDays })}
             onMaxHoldChange={(stockMaxHold) => set({ stockMaxHold })}
           />

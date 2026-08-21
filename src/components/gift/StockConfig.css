@@ -1,10 +1,7 @@
 .stk-note { font-size: 12px; color: #9ca3af; line-height: 1.5; margin-bottom: 10px; }
 
-.stock-ways {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
+.stock-ways { display: flex; flex-direction: column; gap: 10px; }
+.stock-way-wrap { display: flex; flex-direction: column; }
 .stock-way {
   display: flex;
   align-items: flex-start;
@@ -15,6 +12,12 @@
   border-radius: 12px;
   padding: 11px 13px;
   transition: border-color 0.15s, background 0.15s;
+}
+/* 展开配置时，勾选行与下方配置块视觉连成一体 */
+.stock-way-wrap:has(.way-config) .stock-way {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
 }
 .stock-way:hover { border-color: #d1d5db; }
 .stock-way.active { border-color: #1a1a1a; background: #fafafa; }
@@ -40,8 +43,54 @@
 }
 
 .stock-way-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.stock-way-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.stock-way-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
 .stock-way-desc { font-size: 11px; color: #9ca3af; line-height: 1.4; }
+.stock-way-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+/* 途径展开后的参数配置块 */
+.way-config {
+  background: #fff;
+  border: 1.5px solid #1a1a1a;
+  border-top: 1px dashed #e5e7eb;
+  border-radius: 0 0 12px 12px;
+  padding: 13px 15px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.way-config-note { font-size: 12px; color: #6b7280; line-height: 1.5; }
+.way-config-row { display: flex; gap: 14px; }
+.way-field { flex: 1; min-width: 0; }
+.way-config-calc {
+  font-size: 12px;
+  color: #4338ca;
+  background: #eef2ff;
+  padding: 7px 11px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+.way-config-warn {
+  font-size: 12px;
+  color: #b45309;
+  background: #fef3c7;
+  padding: 7px 11px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
 
 .stock-warn {
   margin-top: 10px;

@@ -11,7 +11,9 @@
 //   price         number (Gems)
 //   intimacy      number (+N intimacy added when sent)
 //   hasStock      bool — 支持库存：用户可免费攒该礼物到背包，送礼时优先扣库存
-//   obtainWays    string[] — 免费获取途径 keys (see data/obtainWays.js)
+//   obtainWays    string[] — 免费获取途径 keys: drop | checkin | gempack
+//   dropConfig    { rate, amount } — 聊天掉落概率(%)与单次数量
+//   checkinConfig { times, amount } — 签到可领取次数与每次数量
 //   stockExpireDays  number — 库存有效期天数，0 = 永久
 //   stockMaxHold  number — 单用户持有上限，0 = 不限
 //   specialBubble bool — when true, bubbleText is shown/used
@@ -31,7 +33,10 @@ export const SEED_GIFTS = [
   {
     id: 'heart', emoji: '💖', nameEn: 'Heart', category: 'daily',
     price: 1, intimacy: 1,
-    hasStock: true, obtainWays: ['task', 'checkin'], stockExpireDays: 0, stockMaxHold: 0,
+    hasStock: true, obtainWays: ['drop', 'checkin'],
+    dropConfig: { rate: 2, amount: 1 },
+    checkinConfig: { times: 1, amount: 5 },
+    stockExpireDays: 0, stockMaxHold: 0,
     specialBubble: false, bubbleText: '',
     charReply: false, replyPrompt: '',
     hasEffect: true, effect: '小气泡动画', hasPlay: false, play: {}, status: 'on', order: 0,
@@ -83,7 +88,10 @@ export const SEED_GIFTS = [
     eventStartAt: isoOffsetDays(-1),
     eventEndAt: isoOffsetDays(2),
     price: 66, intimacy: 66,
-    hasStock: true, obtainWays: ['checkin', 'event'], stockExpireDays: 7, stockMaxHold: 20,
+    hasStock: true, obtainWays: ['checkin', 'gempack'],
+    dropConfig: { rate: 0, amount: 1 },
+    checkinConfig: { times: 1, amount: 1 },
+    stockExpireDays: 7, stockMaxHold: 20,
     specialBubble: true, bubbleText: '这束玫瑰只为你盛开 🌹',
     bubbleSticker: false, bubbleStickerUrl: '', stickerAnchor: 'top-right',
     charReply: true, replyPrompt: '用户送了节日玫瑰，以浪漫感动的语气回应这份节日心意。',

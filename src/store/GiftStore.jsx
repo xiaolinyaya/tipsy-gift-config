@@ -2,8 +2,11 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { SEED_GIFTS } from '../data/gifts'
 import { autoTranslate } from '../data/autoTranslate'
 
-// v3: 库存语义改为「用户背包攒礼物」，字段换成 obtainWays / stockExpireDays / stockMaxHold。
-const KEY = 'tipsy.gifts.v3'
+// v4: 获取途径收敛为聊天掉落 / 签到 / 宝石包购买，新增 dropConfig / checkinConfig。
+const KEY = 'tipsy.gifts.v4'
+
+// 仅这三种途径有效，旧数据里的 task/event/lottery/exchange/gift 会被过滤掉。
+const VALID_WAYS = new Set(['drop', 'checkin', 'gempack'])
 const GiftContext = createContext(null)
 
 // Seed gifts ship with empty `names`; fill them from the mock dictionary once
@@ -28,9 +31,11 @@ function normalize(gift) {
     play,
     hasEffect: gift.hasEffect ?? Boolean(gift.effectUrl || gift.effect),
     hasPlay: gift.hasPlay ?? Boolean(gift.playName || play.name),
-    // 库存（用户背包攒礼物）
+    // 库存（用户背包攒礼物）。途径收敛到 drop / checkin / gempack 三种。
     hasStock: gift.hasStock ?? false,
-    obtainWays: gift.obtainWays || [],
+    obtainWays: (gift.obtainWays || []).filter((w) => VALID_WAYS.has(w)),
+    dropConfig: { rate: 0, amount: 1, ...(gift.dropConfig || {}) },
+    checkinConfig: { times: 1, amount: 1, ...(gift.checkinConfig || {}) },
     stockExpireDays: gift.stockExpireDays ?? 0,
     stockMaxHold: gift.stockMaxHold ?? 0,
     // 活动时间
