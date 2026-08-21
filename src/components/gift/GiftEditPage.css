@@ -243,29 +243,10 @@
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* 子级字段标签（活动时间的开始/结束、贴纸位置等） */
+/* 子级字段标签（活动时间的开始/结束、签到时间段等） */
 .sub-label {
   display: block;
   font-size: 12px;
   color: #9ca3af;
   margin-bottom: 6px;
-}
-
-/* 术语英文标注 */
-.term-en {
-  font-size: 11px;
-  font-weight: 500;
-  color: #9ca3af;
-  letter-spacing: 0.02em;
-}
-
-/* 气泡贴纸：嵌在特殊气泡配置内的二级开关块 */
-.sticker-block {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px dashed #e5e7eb;
-}
-.switch-row.inner {
-  padding: 0 0 4px;
-  border-bottom: none;
 }

@@ -18,9 +18,6 @@
 //   stockMaxHold  number — 单用户持有上限，0 = 不限
 //   specialBubble bool — when true, bubbleText is shown/used
 //   bubbleText    string — 送礼气泡文案 (only meaningful if specialBubble)
-//   bubbleSticker bool — when true, a sticker overlays (and overhangs) the bubble
-//   bubbleStickerUrl  string — 气泡贴纸图片
-//   stickerAnchor 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 //   charReply     bool — when true, replyPrompt is shown/used
 //   replyPrompt   string — 角色回复Prompt (only meaningful if charReply)
 //   effect        string — 聊天室动效 (text placeholder, e.g. "2s动效")
@@ -93,7 +90,6 @@ export const SEED_GIFTS = [
     checkinConfig: { times: 1, amount: 1, startAt: isoOffsetDays(-1), endAt: isoOffsetDays(2) },
     stockExpireDays: 7, stockMaxHold: 20,
     specialBubble: true, bubbleText: '这束玫瑰只为你盛开 🌹',
-    bubbleSticker: false, bubbleStickerUrl: '', stickerAnchor: 'top-right',
     charReply: true, replyPrompt: '用户送了节日玫瑰，以浪漫感动的语气回应这份节日心意。',
     hasEffect: true, effect: '玫瑰花雨', hasPlay: false, play: {}, status: 'on', order: 5,
     names: {},

@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { SEED_GIFTS } from '../data/gifts'
 import { autoTranslate } from '../data/autoTranslate'
 
-// v5: 签到新增可领取时间段 (checkinConfig.startAt / endAt)。
-const KEY = 'tipsy.gifts.v5'
+// v6: 移除气泡贴纸配置 (bubbleSticker / bubbleStickerUrl / stickerAnchor)。
+const KEY = 'tipsy.gifts.v6'
 
 // 仅这三种途径有效，旧数据里的 task/event/lottery/exchange/gift 会被过滤掉。
 const VALID_WAYS = new Set(['drop', 'checkin', 'gempack'])
@@ -41,10 +41,6 @@ function normalize(gift) {
     // 活动时间
     eventStartAt: gift.eventStartAt || '',
     eventEndAt: gift.eventEndAt || '',
-    // 气泡贴纸
-    bubbleSticker: gift.bubbleSticker ?? Boolean(gift.bubbleStickerUrl),
-    bubbleStickerUrl: gift.bubbleStickerUrl || '',
-    stickerAnchor: gift.stickerAnchor || 'top-right',
   }
 }
 

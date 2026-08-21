@@ -5,7 +5,6 @@ import ImageUpload from './ImageUpload'
 import EffectUpload from './EffectUpload'
 import AutoTextarea from './AutoTextarea'
 import PlayCardConfig from './PlayCardConfig'
-import BubbleStickerConfig from './BubbleStickerConfig'
 import StockConfig from './StockConfig'
 import EventBadgePreview from './EventBadgePreview'
 import { toLocalInput } from '../../data/eventTime'
@@ -22,7 +21,6 @@ function blankGift() {
     checkinConfig: { times: 1, amount: 1, startAt: '', endAt: '' },
     stockExpireDays: 0, stockMaxHold: 0,
     specialBubble: false, bubbleText: '', bubbleBgUrl: '',
-    bubbleSticker: false, bubbleStickerUrl: '', stickerAnchor: 'top-right',
     charReply: false, replyPrompt: '',
     hasEffect: false, effectType: 'local', effect: '', effectUrl: '',
     hasPlay: false,
@@ -352,33 +350,6 @@ export default function GiftEditPage({ giftId, onDone }) {
                 </ul>
                 <p className="spec-fallback">留空则使用系统默认气泡样式。</p>
               </div>
-            </div>
-
-            <div className="sticker-block" data-prd="edit-bubble-sticker">
-              <div className="switch-row inner">
-                <div className="switch-label">
-                  <span>气泡贴纸 <span className="term-en">Bubble Sticker</span></span>
-                  <span className="switch-desc">叠在气泡上的小装饰，允许超出气泡边界（出血）</span>
-                </div>
-                <button
-                  type="button"
-                  className={`switch ${form.bubbleSticker ? 'on' : ''}`}
-                  onClick={() => set({ bubbleSticker: !form.bubbleSticker })}
-                >
-                  <span className="knob" />
-                </button>
-              </div>
-
-              {form.bubbleSticker && (
-                <BubbleStickerConfig
-                  stickerUrl={form.bubbleStickerUrl}
-                  anchor={form.stickerAnchor || 'top-right'}
-                  bubbleText={form.bubbleText}
-                  bubbleBgUrl={form.bubbleBgUrl}
-                  onStickerChange={(bubbleStickerUrl) => set({ bubbleStickerUrl })}
-                  onAnchorChange={(stickerAnchor) => set({ stickerAnchor })}
-                />
-              )}
             </div>
           </div>
         )}
