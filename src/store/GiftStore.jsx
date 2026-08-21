@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { SEED_GIFTS } from '../data/gifts'
 import { autoTranslate } from '../data/autoTranslate'
 
-// v2: 新增库存 / 活动时间 / 气泡贴纸字段，并加入活动礼物示例，故换 key 重置本地数据。
-const KEY = 'tipsy.gifts.v2'
+// v3: 库存语义改为「用户背包攒礼物」，字段换成 obtainWays / stockExpireDays / stockMaxHold。
+const KEY = 'tipsy.gifts.v3'
 const GiftContext = createContext(null)
 
 // Seed gifts ship with empty `names`; fill them from the mock dictionary once
@@ -28,9 +28,11 @@ function normalize(gift) {
     play,
     hasEffect: gift.hasEffect ?? Boolean(gift.effectUrl || gift.effect),
     hasPlay: gift.hasPlay ?? Boolean(gift.playName || play.name),
-    // 库存
+    // 库存（用户背包攒礼物）
     hasStock: gift.hasStock ?? false,
-    stock: gift.stock ?? 0,
+    obtainWays: gift.obtainWays || [],
+    stockExpireDays: gift.stockExpireDays ?? 0,
+    stockMaxHold: gift.stockMaxHold ?? 0,
     // 活动时间
     eventStartAt: gift.eventStartAt || '',
     eventEndAt: gift.eventEndAt || '',

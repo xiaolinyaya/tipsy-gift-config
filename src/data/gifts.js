@@ -10,8 +10,10 @@
 //   eventEndAt    ISO-ish local datetime string — 活动结束; ≤3 天时标签转倒计时
 //   price         number (Gems)
 //   intimacy      number (+N intimacy added when sent)
-//   hasStock      bool — when true, the gift is limited-quantity
-//   stock         number — 库存总量 (only meaningful if hasStock)
+//   hasStock      bool — 支持库存：用户可免费攒该礼物到背包，送礼时优先扣库存
+//   obtainWays    string[] — 免费获取途径 keys (see data/obtainWays.js)
+//   stockExpireDays  number — 库存有效期天数，0 = 永久
+//   stockMaxHold  number — 单用户持有上限，0 = 不限
 //   specialBubble bool — when true, bubbleText is shown/used
 //   bubbleText    string — 送礼气泡文案 (only meaningful if specialBubble)
 //   bubbleSticker bool — when true, a sticker overlays (and overhangs) the bubble
@@ -29,6 +31,7 @@ export const SEED_GIFTS = [
   {
     id: 'heart', emoji: '💖', nameEn: 'Heart', category: 'daily',
     price: 1, intimacy: 1,
+    hasStock: true, obtainWays: ['task', 'checkin'], stockExpireDays: 0, stockMaxHold: 0,
     specialBubble: false, bubbleText: '',
     charReply: false, replyPrompt: '',
     hasEffect: true, effect: '小气泡动画', hasPlay: false, play: {}, status: 'on', order: 0,
@@ -80,7 +83,7 @@ export const SEED_GIFTS = [
     eventStartAt: isoOffsetDays(-1),
     eventEndAt: isoOffsetDays(2),
     price: 66, intimacy: 66,
-    hasStock: true, stock: 500,
+    hasStock: true, obtainWays: ['checkin', 'event'], stockExpireDays: 7, stockMaxHold: 20,
     specialBubble: true, bubbleText: '这束玫瑰只为你盛开 🌹',
     bubbleSticker: false, bubbleStickerUrl: '', stickerAnchor: 'top-right',
     charReply: true, replyPrompt: '用户送了节日玫瑰，以浪漫感动的语气回应这份节日心意。',

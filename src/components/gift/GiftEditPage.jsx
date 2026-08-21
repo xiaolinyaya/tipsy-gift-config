@@ -6,6 +6,7 @@ import EffectUpload from './EffectUpload'
 import AutoTextarea from './AutoTextarea'
 import PlayCardConfig from './PlayCardConfig'
 import BubbleStickerConfig from './BubbleStickerConfig'
+import StockConfig from './StockConfig'
 import EventBadgePreview from './EventBadgePreview'
 import { toLocalInput } from '../../data/eventTime'
 import './GiftEditPage.css'
@@ -16,7 +17,7 @@ function blankGift() {
     emoji: '🎁', iconUrl: '', nameEn: '', names: {}, category: 'daily',
     eventBadgeUrl: '', eventStartAt: '', eventEndAt: '',
     price: 0, intimacy: 0,
-    hasStock: false, stock: 0,
+    hasStock: false, obtainWays: [], stockExpireDays: 0, stockMaxHold: 0,
     specialBubble: false, bubbleText: '', bubbleBgUrl: '',
     bubbleSticker: false, bubbleStickerUrl: '', stickerAnchor: 'top-right',
     charReply: false, replyPrompt: '',
@@ -197,7 +198,7 @@ export default function GiftEditPage({ giftId, onDone }) {
         <div className="switch-row" data-prd="edit-stock-switch">
           <div className="switch-label">
             <span>支持库存</span>
-            <span className="switch-desc">开启后该礼物限量发售，售罄自动从商城下架</span>
+            <span className="switch-desc">开启后用户可通过行为免费获得该礼物并存入背包，送礼时优先扣减库存，不消耗 Gems</span>
           </div>
           <button
             type="button"
@@ -208,17 +209,14 @@ export default function GiftEditPage({ giftId, onDone }) {
           </button>
         </div>
         {form.hasStock && (
-          <div className="field conditional" data-prd="edit-stock-config">
-            <label className="field-label">库存总量</label>
-            <input
-              className="text-input"
-              type="number"
-              min="0"
-              value={form.stock ?? 0}
-              onChange={(e) => set({ stock: Number(e.target.value) })}
-            />
-            <p className="spec-fallback">库存为 0 时礼物在商城显示为「已售罄」且不可购买。</p>
-          </div>
+          <StockConfig
+            ways={form.obtainWays || []}
+            expireDays={form.stockExpireDays ?? 0}
+            maxHold={form.stockMaxHold ?? 0}
+            onWaysChange={(obtainWays) => set({ obtainWays })}
+            onExpireChange={(stockExpireDays) => set({ stockExpireDays })}
+            onMaxHoldChange={(stockMaxHold) => set({ stockMaxHold })}
+          />
         )}
 
         <div className="field" data-prd="edit-category">
